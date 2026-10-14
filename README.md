@@ -38,3 +38,4 @@ Content-Type: application/json
 ```powershell
 dotnet test
 ```
+# dotnet-game-session-api
