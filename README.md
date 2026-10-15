@@ -1,6 +1,6 @@
 # Game Session API
 
-A compact ASP.NET Core Minimal API that models multiplayer game sessions and player membership. It is a portfolio sample for C#/.NET web development: typed request contracts, SQLite persistence, validation, REST endpoints and unit tests.
+A compact ASP.NET Core Minimal API that models multiplayer game sessions and player membership. It is a portfolio sample for C#/.NET web development: typed request contracts, SQLite persistence, validation, REST endpoints and automated tests.
 
 ## Features
 
@@ -10,6 +10,31 @@ A compact ASP.NET Core Minimal API that models multiplayer game sessions and pla
 - SQLite persistence through Entity Framework Core
 - JSON enum values and RFC 7807-style validation responses
 - xUnit tests for request validation
+
+## API design
+
+```text
+HTTP client
+    │ JSON request contracts
+    ▼
+ASP.NET Core Minimal API
+    │ validation and session rules
+    ▼
+Entity Framework Core → SQLite
+```
+
+The server is responsible for the rules that protect a session: only lobby sessions accept new players, player IDs are unique inside a session and membership cannot exceed the configured capacity.
+
+## Endpoints
+
+| Method | Route | Purpose |
+| --- | --- | --- |
+| `GET` | `/health` | Service health check |
+| `GET` | `/api/sessions?status=Lobby` | List sessions, optionally filtered by status |
+| `GET` | `/api/sessions/{id}` | Get a single session and its members |
+| `POST` | `/api/sessions` | Create a session |
+| `POST` | `/api/sessions/{id}/members` | Join a lobby session |
+| `PATCH` | `/api/sessions/{id}/status` | Change status to `Lobby`, `InProgress` or `Completed` |
 
 ## Run locally
 
@@ -38,4 +63,11 @@ Content-Type: application/json
 ```powershell
 dotnet test
 ```
-# dotnet-game-session-api
+
+## What this project demonstrates
+
+- Minimal API endpoint design with typed C# request and response contracts
+- Validation responses through RFC 7807-compatible problem details
+- Persisting game session and member relationships using EF Core
+- Enforcing multiplayer session rules in the backend
+- Unit-testing validation logic with xUnit
