@@ -45,6 +45,8 @@ dotnet run --project src/GameSessionApi
 
 The API creates `game-sessions.db` locally on first startup.
 
+When running in the Development environment, interactive Swagger/OpenAPI documentation is available at [http://localhost:5274/swagger](http://localhost:5274/swagger).
+
 ## Example request
 
 ```http

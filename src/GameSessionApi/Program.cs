@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GameSessionDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("GameSessions")));
 builder.Services.AddProblemDetails();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
@@ -18,6 +20,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Game Session API v1");
+        options.DocumentTitle = "Game Session API — OpenAPI";
+    });
 }
 else
 {
@@ -36,9 +44,9 @@ app.MapGet("/", () => Results.Ok(new
     endpoints = new[] { "/health", "/api/sessions" }
 }));
 
-app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+app.MapGet("/health", () => Results.Ok(new { status = "ok" })).WithTags("System");
 
-var sessions = app.MapGroup("/api/sessions");
+var sessions = app.MapGroup("/api/sessions").WithTags("Sessions");
 
 sessions.MapGet("/", async (GameSessionDbContext database, SessionStatus? status, CancellationToken cancellationToken) =>
 {
