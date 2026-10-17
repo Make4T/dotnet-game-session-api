@@ -47,6 +47,20 @@ The API creates `game-sessions.db` locally on first startup.
 
 When running in the Development environment, interactive Swagger/OpenAPI documentation is available at [http://localhost:5274/swagger](http://localhost:5274/swagger).
 
+## Game Session Command Center
+
+The repository also contains a React + TypeScript client that turns the API into a small multiplayer-session dashboard. It uses the same public endpoints as Swagger, so the UI is a practical visual demonstration of the API contracts and server-side rules.
+
+Start the API in one terminal, then start the client in a second terminal:
+
+```powershell
+cd client
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173). The development API enables CORS for this local UI origin. The Command Center lets you create lobbies, filter sessions, join players, change session state and inspect a local activity feed.
+
 ## Example request
 
 ```http
